@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
 
-export const ns = 'ui-duck';
-export const shape = {
+const ns = 'ui-duck';
+const shape = {
     isDarkTheme: PropTypes.bool.isRequired,
     itemsToShow: PropTypes.number.isRequired,
 };
-export const defaultState = {
+const defaultState = {
     isDarkTheme: false,
     itemsToShow: 5,
 };
-export const root = state => state[ns];
-export const selectors = {
+const root = state => state[ns] ;
+const selectors = {
     root,
     itemsToShow: state => root(state).itemsToShow,
     isDarkTheme: state => root(state).isDarkTheme,
 };
-export const types = {
+const types = {
     updateItemsToShow: `UPDATE_ITEMS_TO_SHOW`,
     toggleTheme: `TOGGLE_THEME`,
 };
@@ -26,11 +26,11 @@ const updateItemsToShow = value => ({
 const toggleTheme = () => ({
     type: types.toggleTheme,
 });
-export const actions = {
+const actions = {
     updateItemsToShow,
     toggleTheme,
 };
-export const rawReducer = (state = defaultState, action) => {
+const rawReducer = (state = defaultState, action) => {
     const {type, payload} = action;
     switch (type) {
         case types.updateItemsToShow:
@@ -41,12 +41,23 @@ export const rawReducer = (state = defaultState, action) => {
         case types.toggleTheme:
             return {
                 ...state,
-                isDarkTheme: !selectors.isDarkTheme(state)
+                isDarkTheme: !state.isDarkTheme
             };
         default:
             return state;
     }
 };
-export const reducer = {
+const reducer = {
     [ns]: rawReducer,
 };
+export default {
+    ns,
+    shape,
+    defaultState,
+    root,
+    selectors,
+    types,
+    actions,
+    rawReducer,
+    reducer,
+}
