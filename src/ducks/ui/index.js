@@ -54,7 +54,6 @@ export default {
     ns,
     shape,
     defaultState,
-    root,
     selectors,
     types,
     actions,
