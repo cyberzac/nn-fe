@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ns = 'ui-duck';
+const ns = 'ui';
 const shape = {
     isDarkTheme: PropTypes.bool.isRequired,
     itemsToShow: PropTypes.number.isRequired,

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {dataReducer, uiReducer} from './reducers';
+import {dataReducer} from './reducers';
 import {applyMiddleware, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
@@ -11,7 +11,6 @@ import {combineReducers} from 'redux';
 import * as ducks from './ducks'
 
 const rootReducer = combineReducers({
-    ui: uiReducer,
     data: dataReducer,
     ...ducks.ui.reducer,
 });
