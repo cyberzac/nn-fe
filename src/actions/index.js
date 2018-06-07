@@ -51,8 +51,8 @@ export const fetchItemIds = () => {
         dispatch(requestItemIdsStart());
         return api
             .getItemIds()
-            .then(itemsIds => {
-                dispatch(requestItemIdsSuccess(itemsIds));
+            .then(itemIds => {
+                dispatch(requestItemIdsSuccess(itemIds));
             })
             .catch(err => {
                 dispatch(requestItemIdsFail(err));
