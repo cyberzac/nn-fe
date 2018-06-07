@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {api} from "../../utils";
 
-const ns = 'itemsIds';
+const ns = 'itemIds';
 const shape = {
     ids: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -64,19 +64,21 @@ const rawReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 isLoading: true,
-            }
+            };
         case types.success:
             return {
                 ids: payload,
                 isLoading: false,
                 error: null
-            }
+            };
         case types.fail:
             return {
                 ids: [],
                 isLoading: false,
                 error: stringifyErr(payload)
-            }
+            };
+        default:
+            return state;
     }
 };
 const reducer = {
