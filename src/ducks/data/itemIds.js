@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {api} from "../../utils";
+import {api} from "../../utils/index";
 
 const ns = 'itemIds';
 const shape = {

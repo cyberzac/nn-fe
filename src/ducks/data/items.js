@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {api} from "../../utils";
+import {api} from "../../utils/index";
 
 const ns = 'items';
 const shape = {
@@ -11,11 +11,14 @@ const defaultState = {
     items: [],
     isLoading: false,
     error: null,
+};
+const root = state => {
+    console.log("state:", state, ", ns:", ns);
+    state[ns];
 }
-const root = state => state[ns];
-const selectors = {
+export const selectors = {
     root,
-    // items: state => (root(state).ite || {})ms,
+    // items: state => (root(state).items,
     item: (state, id) => (root(state)[id] || {}).item,
     isLoading: (state, id) => (root(state)[id] || {}).isLoading,
     error: (state, id) => (root(state)[id] || {}).error,
