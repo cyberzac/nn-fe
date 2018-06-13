@@ -14,18 +14,14 @@ const defaultState = {
 };
 const root = state => {
     console.log("state:", state, ", ns:", ns);
-    state[ns];
+    return state[ns]; // Must have return
 };
-export const selectors = {
+const selectors = {
     root,
-    items: state => ({}),
-    item: state => ({}),
-    isLoading: state => ({}),
-    error: state => ({}),
-    // items: state => (root(state).items,
-    // item: (state, id) => (root(state)[id] || {}).item,
-    // isLoading: (state, id) => (root(state)[id] || {}).isLoading,
-    // error: (state, id) => (root(state)[id] || {}).error,
+    items: state => root(state).items,
+    item: (state, id) => (root(state)[id] || {}).item,
+    isLoading: (state, id) => (root(state)[id] || {}).isLoading,
+    error: (state, id) => (root(state)[id] || {}).error,
 };
 const types = {
     start: 'REQUEST_ITEM_START',
