@@ -40,6 +40,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = {
     fetchItemIds: ducks.data.itemIds.actions.fetchItemIds,
-    setItemsToShow: ducks.ui.actions.setItemsToShow,
+    setItemsToShow: ducks.ui.actions.updateItemsToShow,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PageNewsList);
