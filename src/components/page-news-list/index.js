@@ -12,7 +12,7 @@ export class PageNewsList extends Component {
 
     shouldComponentUpdate(nextProps) {
         const shouldUpdate = !isArraysEqual(this.props.ids, nextProps.ids);
-        console.log('should update', shouldUpdate);
+        // console.log('should update', shouldUpdate);
         return shouldUpdate
     }
 
