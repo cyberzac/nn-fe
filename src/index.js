@@ -7,7 +7,7 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import * as ducks from './ducks'
-import {logger} from "./utils";
+import {logger, reduxFetch} from "./utils";
 
 const rootReducer = combineReducers({
     ...ducks.ui.reducer,
@@ -19,7 +19,11 @@ const composeEnhancers =
         ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
         : compose;
 const enhancer = composeEnhancers(
-    applyMiddleware(thunk, logger)
+    applyMiddleware(
+        thunk,
+        // logger,
+        reduxFetch
+    )
     // other store enhancers if any
 );
 const store = createStore(rootReducer, enhancer);
