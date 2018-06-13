@@ -20,62 +20,37 @@ const selectors = {
     error: state => root(state).error,
 };
 const types = {
-    start: 'REQUEST_ITEM_IDS_START',
-    success: 'REQUEST_ITEM_IDS_SUCCESS',
-    fail: 'REQUEST_ITEM_IDS_FAIL',
+    fetchItemIds: 'REQUEST_ITEM_IDS',
 };
-const requestItemIdsStart = () => ({
-    type: types.start,
-});
-const requestItemIdsSuccess = itemIds => ({
-    type: types.success,
-    payload: itemIds,
-});
-const requestItemIdsFail = err => ({
-    type: types.fail,
-    payload: err,
-});
-const fetchItemIds = () => {
-    return (dispatch) => {
-        dispatch(requestItemIdsStart());
-        return api
-            .getItemIds()
-            .then(itemIds => {
-                dispatch(requestItemIdsSuccess(itemIds));
-            })
-            .catch(err => {
-                dispatch(requestItemIdsFail(err));
-            });
+const fetchItemIds =() =>  ({
+        type:types.fetchItemIds,
+        fetch: {url:'/v0/topstories.json'},
+        params: {},
     }
-};
+);
 const actions = {
-    requestItemIdsStart,
-    requestItemIdsSuccess,
-    requestItemIdsFail,
     fetchItemIds,
 };
 // HELPERS
-const stringifyErr = err => err.toString();
-
 const rawReducer = (state = defaultState, action) => {
     const {type, payload} = action;
     switch (type) {
-        case types.start:
+        case `${types.fetchItemIds} / start`:
             return {
                 ...state,
                 isLoading: true,
             };
-        case types.success:
+        case `${types.fetchItemIds} / success`:
             return {
                 ids: payload,
                 isLoading: false,
                 error: null
             };
-        case types.fail:
+        case `${types.fetchItemIds} / fail`:
             return {
                 ids: [],
                 isLoading: false,
-                error: stringifyErr(payload)
+                error: payload
             };
         default:
             return state;

@@ -28,7 +28,7 @@ const types = {
 const fetchItem = id => ({
     type: types.fetchItem,
     fetch: {url: `/v0/item/${id}.json`},
-    params: {id}
+    params: {id},
 });
 const actions = {
     fetchItem,
