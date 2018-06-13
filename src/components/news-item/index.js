@@ -3,9 +3,7 @@ import {Link} from 'react-router-dom';
 import {distanceInWordsToNow} from 'date-fns';
 import "./style.css";
 import {connect} from 'react-redux';
-import * as actions from '../../actions'
-
-
+import * as ducks from '../../ducks';
 export class NewsItem extends Component {
 
     componentDidMount() {
@@ -37,13 +35,14 @@ export class NewsItem extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log("news-item state:", state)
     return {
-        item: (state.data.items[ownProps.id] || {}).item,
+        item: ducks.data.items.selectors.item(state, ownProps.id)
     }
 };
 
 const mapDispatchToProps = {
-    fetchItem: actions.fetchItem,
+       fetchItem: ducks.data.items.actions.fetchItem
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewsItem);
