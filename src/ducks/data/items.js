@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import {BASE_URL} from "./index";
 
 const ns = 'items';
 const shape = {
@@ -27,8 +28,12 @@ const types = {
 };
 const fetchItem = id => ({
     type: types.fetchItem,
-    fetch: {url: `/v0/item/${id}.json`},
-    params: {id},
+    fetch: {
+        url: `${BASE_URL}/v0/item/${id}.json`,
+        start: () => ({[id]: {item: {}, isLoading: true, error: null}}),
+        success: (res) => ({[id]: {item: res, isLoading: false, error: null}}),
+        fail: (err) => ({[id]: {item: {}, isLoading: false, error: err.toString()}})
+    },
 });
 const actions = {
     fetchItem,
@@ -36,28 +41,10 @@ const actions = {
 // HELPERS
 const rawReducer = (state = {}, action) => {
     switch (action.type) {
-        case `${types.fetchItem} / start`:
+        case `${types.fetchItem}`:
             return {
                 ...state,
-                [action.params.id]: {item: {}, isLoading: true, error: null}
-            };
-        case `${types.fetchItem} / success`:
-            return {
-                ...state,
-                [action.params.id]: {
-                    item: action.payload,
-                    isLoading: false,
-                    error: null
-                }
-            };
-        case `${types.fetchItem} / fail`:
-            return {
-                ...state,
-                [action.params.id]: {
-                    item: {},
-                    isLoading: false,
-                    error: action.payload
-                }
+                ...action.payload
             };
         default:
             return state;

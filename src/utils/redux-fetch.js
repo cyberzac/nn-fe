@@ -1,30 +1,27 @@
-const BASE_URL = 'https://hacker-news.firebaseio.com';
 const fetchJson = (url, options) => fetch(url, options).then(res => res.json());
-const stringifyErr = err => err.toString();
 export const reduxFetch = store => next => action => {
     if (!action.fetch) {
         next(action);
         return;
     }
+    const {type, fetch} = action;
     next({
-        type: `${action.type} / start`,
-        params: action.params
+        type,
+        payload: fetch.start(),
     });
-    return fetchJson(BASE_URL + action.fetch.url, action.fetch.options)
+    return fetchJson(fetch.url, fetch.options)
         .then(res => {
             next({
-                type: `${action.type} / success`,
-                payload: res,
-                params: action.params
-            })
+                type,
+                payload: fetch.success(res),
+            });
             return {res};
         })
         .catch(err => {
             next({
-                type: `${action.type} / fail`,
-                payload: stringifyErr(err),
-                params: action.params
-            })
+                type,
+                payload: fetch.fail(err),
+            });
             return {err};
-        })
-}
+        });
+};

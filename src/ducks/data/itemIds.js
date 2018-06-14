@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import {api} from "../../utils/index";
-
+import {BASE_URL} from "./index";
 const ns = 'itemIds';
 const shape = {
     ids: PropTypes.array.isRequired,
@@ -22,10 +21,14 @@ const selectors = {
 const types = {
     fetchItemIds: 'REQUEST_ITEM_IDS',
 };
-const fetchItemIds =() =>  ({
-        type:types.fetchItemIds,
-        fetch: {url:'/v0/topstories.json'},
-        params: {},
+const fetchItemIds = () => ({
+        type: types.fetchItemIds,
+        fetch: {
+            url: `${BASE_URL}/v0/topstories.json`,
+            start: () => ({isLoading: true}),
+            success: (res) => ({ids: res, isLoading: false, error: null}),
+            fail: (err) => ({ids: [], isLoading: false, error: err.toString()}),
+        },
     }
 );
 const actions = {
@@ -33,24 +36,11 @@ const actions = {
 };
 // HELPERS
 const rawReducer = (state = defaultState, action) => {
-    const {type, payload} = action;
-    switch (type) {
-        case `${types.fetchItemIds} / start`:
+    switch (action.type) {
+        case `${types.fetchItemIds}`:
             return {
                 ...state,
-                isLoading: true,
-            };
-        case `${types.fetchItemIds} / success`:
-            return {
-                ids: payload,
-                isLoading: false,
-                error: null
-            };
-        case `${types.fetchItemIds} / fail`:
-            return {
-                ids: [],
-                isLoading: false,
-                error: payload
+                ...action.payload
             };
         default:
             return state;

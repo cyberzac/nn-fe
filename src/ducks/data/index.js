@@ -4,6 +4,7 @@ import items from "./items";
 import { mapObj, augmentSelectorWith } from "../../utils";
 
 export const ns = "data";
+export const BASE_URL = 'https://hacker-news.firebaseio.com';
 const root = state => state[ns];
 export const selectors = {
     root,
@@ -16,7 +17,7 @@ export const rawReducer = combineReducers({
 
 const reducer = {
     [ns]: rawReducer
-}
+};
 
 export default {
     ns,
