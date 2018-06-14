@@ -5,22 +5,25 @@ export const reduxFetch = store => next => action => {
         return;
     }
     const {type, fetch} = action;
-    next({
-        type,
-        payload: fetch.start(),
-    });
-    return fetchJson(fetch.url, fetch.options)
+    const {url, options, start, success, fail} = fetch;
+    if (start) {
+        next({
+            type,
+            payload: start,
+        });
+    }
+    return fetchJson(url, options)
         .then(res => {
             next({
                 type,
-                payload: fetch.success(res),
+                payload: success(res),
             });
             return {res};
         })
         .catch(err => {
             next({
                 type,
-                payload: fetch.fail(err),
+                payload: fail(err),
             });
             return {err};
         });

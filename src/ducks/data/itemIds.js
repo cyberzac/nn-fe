@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import {BASE_URL} from "./index";
+import {payloadReducer} from "../../utils";
 const ns = 'itemIds';
 const shape = {
     ids: PropTypes.array.isRequired,
@@ -34,18 +35,7 @@ const fetchItemIds = () => ({
 const actions = {
     fetchItemIds,
 };
-// HELPERS
-const rawReducer = (state = defaultState, action) => {
-    switch (action.type) {
-        case `${types.fetchItemIds}`:
-            return {
-                ...state,
-                ...action.payload
-            };
-        default:
-            return state;
-    }
-};
+const rawReducer = payloadReducer(types.fetchItemIds, defaultState);
 const reducer = {
     [ns]: rawReducer,
 };
