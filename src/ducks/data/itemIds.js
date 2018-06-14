@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import {api} from "../../utils/index";
-
+import {BASE_URL} from "./index";
+import {payloadReducer} from "../../utils";
 const ns = 'itemIds';
 const shape = {
     ids: PropTypes.array.isRequired,
@@ -20,67 +20,22 @@ const selectors = {
     error: state => root(state).error,
 };
 const types = {
-    start: 'REQUEST_ITEM_IDS_START',
-    success: 'REQUEST_ITEM_IDS_SUCCESS',
-    fail: 'REQUEST_ITEM_IDS_FAIL',
+    fetchItemIds: 'REQUEST_ITEM_IDS',
 };
-const requestItemIdsStart = () => ({
-    type: types.start,
-});
-const requestItemIdsSuccess = itemIds => ({
-    type: types.success,
-    payload: itemIds,
-});
-const requestItemIdsFail = err => ({
-    type: types.fail,
-    payload: err,
-});
-const fetchItemIds = () => {
-    return (dispatch) => {
-        dispatch(requestItemIdsStart());
-        return api
-            .getItemIds()
-            .then(itemIds => {
-                dispatch(requestItemIdsSuccess(itemIds));
-            })
-            .catch(err => {
-                dispatch(requestItemIdsFail(err));
-            });
+const fetchItemIds = () => ({
+        type: types.fetchItemIds,
+        fetch: {
+            url: `${BASE_URL}/v0/topstories.json`,
+            start: () => ({isLoading: true}),
+            success: (res) => ({ids: res, isLoading: false, error: null}),
+            fail: (err) => ({ids: [], isLoading: false, error: err.toString()}),
+        },
     }
-};
+);
 const actions = {
-    requestItemIdsStart,
-    requestItemIdsSuccess,
-    requestItemIdsFail,
     fetchItemIds,
 };
-// HELPERS
-const stringifyErr = err => err.toString();
-
-const rawReducer = (state = defaultState, action) => {
-    const {type, payload} = action;
-    switch (type) {
-        case types.start:
-            return {
-                ...state,
-                isLoading: true,
-            };
-        case types.success:
-            return {
-                ids: payload,
-                isLoading: false,
-                error: null
-            };
-        case types.fail:
-            return {
-                ids: [],
-                isLoading: false,
-                error: stringifyErr(payload)
-            };
-        default:
-            return state;
-    }
-};
+const rawReducer = payloadReducer(types.fetchItemIds, defaultState);
 const reducer = {
     [ns]: rawReducer,
 };
